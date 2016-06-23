@@ -40,8 +40,6 @@ class AdminBaseSecurePresenter extends AdminBasePresenter
                     $this->redirect(str_replace('Admin:', '', $this->getName()) . ':');
             }
         */
-
-
     }
 
 }
