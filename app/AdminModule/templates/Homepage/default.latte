@@ -1,0 +1,21 @@
+{define title}Administrace portálu {$domain}{/define}
+{define description}Administrace portálu{/define}
+{block content}
+
+
+<div id="content">
+    {*
+    {snippet ajaxChange}
+        {$anyVariable}
+        <a n:href="changeVariable! $anyVariable" class="ajax">Change variable!</a>
+    {/snippet}
+    *}
+    {snippet table}
+        {if (isset($articles) && is_array($articles))}
+    {foreach $articles as $article}
+        {$article['title']}
+    {/foreach}
+    {/if}
+    {/snippet}
+
+</div>

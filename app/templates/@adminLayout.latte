@@ -1,0 +1,61 @@
+{**
+ * @param string   $basePath cesta k webovému obsahu např. CSS souborům
+ * @param array    $flashes  pole zpráv
+ *}
+
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{include title|striptags}</title>
+    <meta name="description" content="{include description|striptags}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {block scripts}
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <!-- javaScript -->
+        <script type="text/javascript" src="{$basePath}/js/main.js"></script>
+        <script> <!-- Nějaký konflikt jquery a bootstrapu -->
+            $.fn.bootstrapBtn = $.fn.button.noConflict();
+        </script>
+
+    {/block}
+
+    {block css}
+        <link rel="stylesheet" href="{$basePath}/css/style.css" type="text/css"/>
+        <link rel="stylesheet" href="{$basePath}/less/Admin/main.css" type="text/css"/>
+    {/block}
+
+
+    {block head}{/block}
+</head>
+
+<body id="admin-layout">
+
+
+
+    <div n:foreach="$flashes as $flash" n:class="admin-alert,alert, fade, in, 'alert-'.$flash->type" role="alert">
+        {!$flash->message}
+    </div>
+
+
+<!-- Obsah -->
+<div class="middle">
+
+    <div class="col-md-12 content">
+        <section>
+            {* Vložení obsahu do šablony. *}
+            {include content}
+        </section>
+    </div>
+</div>
+
+
+</body>
+</html>

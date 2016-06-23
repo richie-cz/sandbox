@@ -1,0 +1,50 @@
+{**
+ * @param string   $basePath cesta k webovému obsahu např. CSS souborům
+ * @param array    $flashes  pole zpráv
+ *}
+
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8" />
+
+        <title>{include title|striptags}</title>
+        <meta name="description" content="{include description|striptags}" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+        {block css}
+            <link rel="stylesheet" href="{$basePath}/css/style.css" type="text/css"/>
+            <link rel="stylesheet" href="{$basePath}/less/front/main.css" type="text/css"/>
+        {/block}
+    <script type="text/javascript" src="{$basePath}/js/main.js"></script>
+
+        {block head}{/block}
+    </head>
+
+    <body>
+
+        {* Messages *}
+        <div n:foreach="$flashes as $flash" n:class="alert, 'alert-'.$flash->type" role="alert">{$flash->message}</div>
+        {* Content *}
+        {include content}
+
+        {* Scripts *}
+        {block scripts}
+            <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+            <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+            <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+
+            <script> <!-- Nějaký konflikt jquery a bootstrapu -->
+            $.fn.bootstrapBtn = $.fn.button.noConflict();
+            </script>
+        {/block}
+
+    </body>
+</html>

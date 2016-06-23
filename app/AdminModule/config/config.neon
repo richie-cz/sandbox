@@ -1,0 +1,5 @@
+parameters:
+
+services:
+    - App\AdminModule\Model\UserManager
+    - App\AdminModule\Forms\UserForms

@@ -1,0 +1,8 @@
+parameters:
+
+security:
+
+
+services:
+    - App\FrontModule\Forms\UserForms
+    - App\FrontModule\Model\UserManager

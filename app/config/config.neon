@@ -1,0 +1,64 @@
+#
+# WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+# http://nette.org/security-warning
+#
+parameters:
+    error: Error
+
+php:
+    date.timezone: Europe/Prague
+
+
+
+# Aktivuje panel pro DI v Debugger baru.
+di:
+    debugger: true
+
+nette:
+    debugger:
+        strictMode: TRUE
+        bar: [NetteExtras\XDebugHelper()]
+
+extensions:
+    ajaxHistory: VojtechDobes\NetteAjax\HistoryExtension
+
+
+application:
+    # Presenter pro zpracování vyjímek a chyb aplikace.
+    errorPresenter: %error%
+    # Přesměrovat výjimky přímo už na ErrorPresenter, jinak jdou standartně na laděnku. (Hodí se obzvláště při debuggování ErrorPresentetu.)
+    #catchExceptions: true # Může mít i hodnotu `yes`.
+
+    mapping:
+        *: App\*Module\Presenters\*Presenter
+
+# Nastavení výchozích chybových hlášek pro formuláře.
+forms:
+        messages:
+                REQUIRED: 'Povinné pole.'
+
+session:
+    expiration: 14 days
+
+
+services:
+    - App\Forms\BaseFormFactory
+    - App\Model\RoleManager
+    - App\Model\ResourceManager
+    - App\Model\PrivilegeManager
+    - App\Model\AclManager
+
+    security.frontAuthenticator: App\FrontModule\Components\FrontAuthenticator
+    security.adminAuthenticator: App\AdminModule\Components\AdminAuthenticator
+
+
+    security.authorizatorFactory: App\Components\Authorizator
+    security.authorizator: @security.authorizatorFactory::create
+
+    router: App\RouterFactory::createRouter
+
+
+# Vložení konfiguračních souborů z jednotlivých modulů.
+includes:
+    - ../FrontModule/config/config.neon
+    - ../AdminModule/config/config.neon
