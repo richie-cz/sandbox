@@ -30,9 +30,7 @@ class AdminBaseSecurePresenter extends AdminBasePresenter
             $this->flashMessage('Nejste prihlasen', self::MSG_ERROR);
             $this->redirect($this->loginPresenter);
         }
-
-        $this->template->showMainMenu = true;
-
+        
         /*
            if (!$this->user->isAllowed($this->getName(), $this->getAction())) {
                 $this->flashMessage('Nemáš dostatečná oprávnění.', self::MSG_ERROR);
