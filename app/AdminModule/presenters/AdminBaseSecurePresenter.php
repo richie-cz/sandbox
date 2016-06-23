@@ -15,11 +15,7 @@ class AdminBaseSecurePresenter extends AdminBasePresenter
 {
     /** @var null|string Adresa presenteru pro logování uživatele. */
     protected $loginPresenter = 'Login:';
-
-    /**
-     * Volá se na začátku každé akce a kontroluje uživatelská oprávnění k této akci.
-     * @throws BadRequestException Jestliže je uživatel přihlášen, ale nemá oprávnění k této akci.
-     */
+    
     protected function startup()
     {
         parent::startup();
