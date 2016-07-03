@@ -47,7 +47,7 @@ class AdminBaseSecurePresenter extends AdminBasePresenter
         //dump();exit;
 
 
-        # ROLESioio
+        # ROLES
         /*
         $arrayRolesId = array();
         foreach($this->roleManager->getRolesByUser($this->user->getId()) as $role) {
