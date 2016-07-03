@@ -13,6 +13,7 @@ use Nette\Database\Context;
 use Nette\Object;
 use Nette\Security;
 use App\Model\RoleManager;
+use Nette\Security\Identity;
 
 class AdminAuthenticator extends Object
 {
@@ -49,7 +50,7 @@ class AdminAuthenticator extends Object
      * @param $password
      * @throws Security\AuthenticationException
      */
-    public function login($form, $instructions, $register = false)
+    public function login($form, $instructions = array(), $register = false)
     {
         $presenter = $form->getPresenter();
 
@@ -79,7 +80,10 @@ class AdminAuthenticator extends Object
             
             $this->user->getStorage()->setNamespace('Admin');
             //dump($this->roleManager->getRolesByUser($row[self::COLUMN_ID])->fetchPairs('role_id', 'role_title'));exit;
-            $this->user->login(new Security\Identity($row[self::COLUMN_ID], $this->roleManager->getRolesByUser($row[self::COLUMN_ID], 'Admin')->fetchPairs('role_id', 'role_title'), $arr));
+            //$this->user->login(new Security\Identity($row[self::COLUMN_ID], $this->roleManager->getRolesByUser($row[self::COLUMN_ID], 'Admin')->fetchPairs('role_id', 'role_title'), $arr));
+
+            return new Identity($row->admin_user_id, $this->roleManager->getRolesByUser($row[self::COLUMN_ID], 'Admin')->fetchPairs('role_id', 'role_title'), ['id'=>$row->admin_user_id, 'username' => $row->user_name]);
+
 
             if (isset($instructions->message))
                 $presenter->flashMessage(
@@ -91,6 +95,7 @@ class AdminAuthenticator extends Object
             if (isset($instructions->redirection))
                 $presenter->redirect($instructions->redirection);
         }
+        
         $presenter->redirect('Login:');
     }
 

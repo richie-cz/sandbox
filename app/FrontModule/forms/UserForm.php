@@ -10,6 +10,7 @@ namespace App\FrontModule\Forms;
 
 use App\Components\CredentialsAuthenticator;
 use App\FrontModule\Components\FrontAuthenticator;
+use Arachne\Security\Authentication\Firewall;
 use Nette\Application\UI\Form;
 use Nette\Object;
 use Nette\Security\AuthenticationException;
@@ -35,16 +36,18 @@ class UserForms extends Object
     protected $userManager;
 
 
+    public $firewall;
     /**
      * Konstruktor s injektovanou třidou uživatele.
      * @param User $user automaticky injektovaná třída uživatele
      */
-    public function __construct(User $user, BaseFormFactory $baseFormFactory, UserManager $userManager, FrontAuthenticator $authenticator)
+    public function __construct(User $user, BaseFormFactory $baseFormFactory, UserManager $userManager, FrontAuthenticator $authenticator, Firewall $firewall)
     {
         $this->user = $user;
         $this->formFactory = $baseFormFactory;
         $this->authenticator = $authenticator;
         $this->userManager = $userManager;
+        $this->firewall = $firewall;
     }
 
     /**
@@ -82,7 +85,8 @@ class UserForms extends Object
             ->setAttribute('class', 'btn btn-default');
 
         $form->onSuccess[] = function (Form $form) use ($instructions) {
-            $this->authenticator->login($form, $instructions);
+            $this->firewall->login($this->authenticator->login($form));
+            //$this->authenticator->login($form, $instructions);
             #$this->authenticator->adminLogin($form, $instructions);
 
 

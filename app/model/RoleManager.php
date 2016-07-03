@@ -75,14 +75,14 @@ class RoleManager extends BaseManager
      * @param $userId
      * @return \Nette\Database\Table\Selection
      */
-    public function getRolesByUser($userId, $module = null){
+    public function getRolesByUser($userId = null, $module = null){
 
         $role = $this->database->table(self::TABLE_ROLE)->group(self::COLUMN_ID);
-        #if($module == 'Admin') {
+        if($module == 'Admin' && $userId) {
             //dump($userId);exit;
-        #    $role->where(':' . self::TABLE_ADMIN_USER_ROLE . '.' . \App\AdminModule\Model\UserManager::COLUMN_ID, $userId);
-        #}
-        if($module == 'Front')
+            $role->where(':' . self::TABLE_ADMIN_USER_ROLE . '.' . \App\AdminModule\Model\UserManager::COLUMN_ID, $userId);
+        }
+        if($module == 'Front' && $userId)
            $role->where(':front_user_role.user_id', $userId);
 
         $role->order(self::COLUMN_PARRENT.' IS NULL DESC, '.self::COLUMN_PARRENT.' DESC');

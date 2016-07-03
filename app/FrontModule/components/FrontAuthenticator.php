@@ -13,6 +13,7 @@ use Nette\Database\Context;
 use Nette\Object;
 use Nette\Security;
 use App\Model\RoleManager;
+use Nette\Security\Identity;
 
 class FrontAuthenticator extends Object
 {
@@ -48,7 +49,7 @@ class FrontAuthenticator extends Object
      * @param $password
      * @throws Security\AuthenticationException
      */
-    public function login($form, $instructions, $register = false)
+    public function login($form, $instructions = array(), $register = false)
     {
         $presenter = $form->getPresenter();
 
@@ -71,7 +72,9 @@ class FrontAuthenticator extends Object
             $this->user->setExpiration('30 minutes', TRUE);
             $arr = $row->toArray();
             unset($arr[self::COLUMN_PASSWORD_HASH]);
-            $this->user->login(new Security\Identity($row[self::COLUMN_ID], $this->roleManager->getRolesByUser($row[self::COLUMN_ID], 'Front')->fetchPairs('role_id', 'role_title'), $arr));
+
+            return new Identity($row->user_name, $this->roleManager->getRolesByUser($row[self::COLUMN_ID], 'Front')->fetchPairs('role_id', 'role_title'), ['username' => $row->user_name]);
+
             if (isset($instructions->message))
                 $presenter->flashMessage(
                     $instructions->message,

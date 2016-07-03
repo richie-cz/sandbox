@@ -47,13 +47,19 @@ services:
     - App\Model\ResourceManager
     - App\Model\PrivilegeManager
     - App\Model\AclManager
+    - Arachne\Security\Authentication\Firewall
+    - Arachne\Security\Authorization\Permission
+    - Arachne\Security\Authorization\PermissionAuthorizator
 
     security.frontAuthenticator: App\FrontModule\Components\FrontAuthenticator
+
     security.adminAuthenticator: App\AdminModule\Components\AdminAuthenticator
 
 
-    security.authorizatorFactory: App\Components\Authorizator
-    security.authorizator: @security.authorizatorFactory::create
+
+    #security.authorizator: App\Components\Authorizator::create
+    #security.authorizatorFactory: App\Components\Authorizator
+    #security.authorizator: @security.authorizatorFactory::create
 
     router: App\RouterFactory::createRouter
 

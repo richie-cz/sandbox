@@ -11,11 +11,13 @@ namespace App\AdminModule\Forms;
 use App\AdminModule\Components\AdminAuthenticator;
 
 use App\Components\CredentialsAuthenticator;
+use Arachne\Security\Authentication\Firewall;
 use Nette\Application\UI\Form;
 use Nette\Object;
 use Nette\Security\User;
 use App\AdminModule\Model\UserManager;
 use App\Forms\BaseFormFactory;
+use Nette\Security\Identity;
 
 /**
  * Class UserFormsFactory
@@ -33,17 +35,20 @@ class UserForms extends Object
 
     protected $userManager;
 
+    public $firewall;
+
 
     /**
      * Konstruktor s injektovanou třidou uživatele.
      * @param User $user automaticky injektovaná třída uživatele
      */
-    public function __construct(User $user, BaseFormFactory $baseFormFactory, UserManager $userManager, AdminAuthenticator $adminAuthenticator)
+    public function __construct(User $user, BaseFormFactory $baseFormFactory, UserManager $userManager, AdminAuthenticator $adminAuthenticator, Firewall $firewall)
     {
         $this->user = $user;
         $this->formFactory = $baseFormFactory;
         $this->adminAuthenticator = $adminAuthenticator;
         //$this->frontAuthenticator = $frontAuthenticator;
+        $this->firewall = $firewall;
         $this->userManager = $userManager;
     }
 
@@ -83,7 +88,11 @@ class UserForms extends Object
             ->setAttribute('class', 'btn btn-default');
 
         $form->onSuccess[] = function (Form $form) use ($instructions) {
-            $this->adminAuthenticator->login($form, $instructions);
+            //$row = $form->getValues();
+            //dump($row);exit;
+            //$identity = new Identity($row->user_name, 'Admin', ['username' => $row->user_name]);
+            $this->firewall->login($this->adminAuthenticator->login($form));
+            //$this->adminAuthenticator->login($form, $instructions);
         };
         return $form;
     }
