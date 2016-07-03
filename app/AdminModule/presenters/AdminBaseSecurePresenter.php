@@ -9,9 +9,6 @@
 namespace App\AdminModule\Presenters;
 
 
-
-use Arachne\Security\Authorization\Permission;
-
 class AdminBaseSecurePresenter extends AdminBasePresenter
 
 {
